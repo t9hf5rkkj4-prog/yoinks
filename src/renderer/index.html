@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src data:; script-src 'self'; style-src 'self'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>yoinks</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="screen">
+      <header class="masthead">
+        <!-- the logo takes you home -->
+        <button id="logo" class="logo" type="button" title="Start over">
+          <span id="logo-art" class="logo-art" role="img" aria-label="yoinks"></span>
+        </button>
+        <p class="tagline">yoink any video. paste. yoink. done.</p>
+        <p class="secondary">youtube · x · instagram · threads · tiktok · +1800 more</p>
+      </header>
+
+      <!-- input — was FramedInput + TextInput -->
+      <section id="phase-input" class="phase" hidden>
+        <div class="input-row">
+          <div class="frame input-frame">
+            <label class="frame-title" for="url-input">Paste a link</label>
+            <span class="prompt" aria-hidden="true">❯</span>
+            <input
+              id="url-input"
+              class="url-input"
+              type="text"
+              placeholder="https://youtube.com/watch?v=…"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+          <button id="yoink-button" class="yoink-button" type="button">yoink</button>
+        </div>
+        <p id="input-note" class="secondary note" hidden></p>
+        <p class="secondary note">or drag a link from your browser onto this window</p>
+      </section>
+
+      <!-- probing — same frame, dimmed button -->
+      <section id="phase-probing" class="phase" hidden aria-busy="true">
+        <div class="input-row">
+          <div class="frame input-frame">
+            <span id="probe-title" class="frame-title">Paste a link</span>
+            <span class="prompt" aria-hidden="true">❯</span>
+            <span id="probe-url" class="probe-url secondary"></span>
+          </div>
+          <button class="yoink-button" type="button" disabled>yoink</button>
+        </div>
+      </section>
+
+      <!-- picking — was Panel + ink-select-input -->
+      <section id="phase-picking" class="phase picking" hidden>
+          <div class="video-meta">
+            <img id="video-thumb" class="video-thumb" alt="" hidden />
+            <h1 id="video-title" class="video-title"></h1>
+            <p id="video-details" class="secondary"></p>
+            <p id="video-description" class="video-description secondary" title="click to expand" hidden></p>
+            <button id="dir-button" class="link-button" type="button"></button>
+          </div>
+        <section class="frame panel" aria-labelledby="choices-title">
+          <h2 id="choices-title" class="frame-title">Download</h2>
+          <ul id="choices" class="choices" role="listbox" tabindex="0" aria-labelledby="choices-title"></ul>
+        </section>
+      </section>
+
+      <!-- downloading — both rows always exist, so the layout never jumps -->
+      <section id="phase-downloading" class="phase" hidden>
+        <p id="dl-title" class="secondary"></p>
+        <div class="dl-row">
+          <div
+            id="dl-progress"
+            class="progress"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Download progress"
+          >
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <span class="progress-percent"></span>
+          </div>
+          <p id="dl-busy" class="status">
+            <span class="spinner" aria-hidden="true"></span><span class="secondary">downloading…</span>
+          </p>
+        </div>
+        <div class="dl-row">
+          <p id="dl-meta" class="secondary meta"></p>
+          <p id="dl-status" class="status">
+            <span class="spinner" aria-hidden="true"></span><span id="dl-status-text" class="secondary"></span>
+          </p>
+        </div>
+      </section>
+
+      <section id="phase-done" class="phase" hidden>
+        <p><strong>✓ yoinked!</strong> find your file in:</p>
+        <p id="done-path" class="secondary"></p>
+        <button id="done-button" class="ghost-button" type="button">↵ yoink another</button>
+      </section>
+
+      <section id="phase-error" class="phase" hidden>
+        <p id="error-message" class="error" role="alert"></p>
+      </section>
+
+      <!-- was Shortcuts; the probing status is its `leading` slot -->
+      <footer class="shortcuts">
+        <p id="probe-status" class="status leading" hidden>
+          <span class="spinner" aria-hidden="true"></span><span id="probe-status-text" class="secondary"></span>
+        </p>
+        <ul id="hints" class="hints"></ul>
+      </footer>
+    </main>
+  </body>
+</html>

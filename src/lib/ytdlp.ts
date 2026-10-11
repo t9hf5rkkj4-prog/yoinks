@@ -67,7 +67,11 @@ export async function findFfmpeg(): Promise<string | undefined> {
   if (await commandWorks('ffmpeg', ['-version'])) return undefined // on PATH, yt-dlp finds it itself
   try {
     const mod = await import('ffmpeg-static')
-    const ffmpegPath = (mod.default ?? mod) as unknown as string | null
+    const bundled = (mod.default ?? mod) as unknown as string | null
+    // In a packaged Electron app, node_modules live inside app.asar, which
+    // can't hold runnable binaries — the packager puts them in
+    // app.asar.unpacked instead (see asarUnpack in package.json)
+    const ffmpegPath = bundled?.replace(`app.asar${path.sep}`, `app.asar.unpacked${path.sep}`)
     if (ffmpegPath && (await commandWorks(ffmpegPath, ['-version']))) return ffmpegPath
   } catch {
     // ffmpeg-static not installed or unsupported platform
@@ -76,12 +80,15 @@ export async function findFfmpeg(): Promise<string | undefined> {
 }
 
 export type VideoInfo = {
-  title: string
-  uploader?: string
-  duration?: number
-  webpage_url?: string
-  extractor_key?: string
-  formats?: RawFormat[]
+title: string
+uploader?: string
+duration?: number
+description?: string
+upload_date?: string // yyyymmdd
+thumbnail?: string // best thumbnail url
+webpage_url?: string
+extractor_key?: string
+formats?: RawFormat[]
 }
 
 type RawFormat = {

@@ -1,0 +1,368 @@
+/* Colors from the old theme.ts.
+   "auto" used the terminal's own colors; here it follows the OS light/dark setting. */
+:root {
+  color-scheme: dark;
+  --bg: #18181b;
+  --primary: #ffffff;
+  --secondary: #a1a1aa;
+  --on-primary: #18181b;
+  --line: var(--secondary);
+  --font: ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  --radius: 8px;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --primary: #18181b;
+  --secondary: #52525b;
+  --on-primary: #ffffff;
+}
+@media (prefers-color-scheme: light) {
+  :root[data-theme='auto'] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --primary: #18181b;
+    --secondary: #52525b;
+    --on-primary: #ffffff;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--primary);
+  font: 14px/1.5 var(--font);
+}
+h1,
+h2,
+p {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+::selection {
+  background: var(--primary);
+  color: var(--bg);
+}
+.primary {
+  color: var(--primary);
+}
+.secondary {
+  color: var(--secondary);
+}
+
+/* was fullscreen.tsx: everything centered in the window.
+   1lh = one terminal row, so margins below stand in for <Gap /> */
+.screen {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2lh 2ch;
+  text-align: center;
+}
+.masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1lh;
+}
+.logo {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+body[data-phase='input'] .logo {
+  cursor: default;
+}
+.logo-art {
+  display: block;
+  white-space: pre;
+  line-height: 1;
+  font-size: 16px;
+  text-align: left;
+}
+.tagline {
+  margin-top: 1lh;
+}
+
+.phase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* titled frame — was the hand-drawn ╭─ Title ───╮ in framed-input / panel */
+.frame {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.frame-title {
+  position: absolute;
+  top: 0;
+  left: 1.5ch;
+  transform: translateY(-50%);
+  padding: 0 1ch;
+  background: var(--bg);
+  color: var(--primary);
+  line-height: 1;
+}
+
+/* framed input: up to 64 columns of field + the 9-column button on its right edge */
+.input-row {
+  display: flex;
+  width: min(73ch, 100%);
+}
+.input-frame {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 1ch;
+  padding: 0.75em 2ch 0.6em;
+  border-right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.prompt {
+  color: var(--primary);
+}
+.url-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  caret-color: var(--primary);
+}
+.url-input::placeholder {
+  color: var(--secondary);
+}
+.probe-url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.yoink-button {
+  flex: none;
+  padding: 0 2ch;
+  border: 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: bold;
+  cursor: pointer;
+}
+.yoink-button:disabled {
+  background: var(--secondary);
+  cursor: default;
+}
+.note {
+  margin-top: 0.4em;
+}
+
+/* picking: up to 78 columns: title on the left, 38-column panel on the right */
+.phase.picking {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 3ch;
+  width: min(78ch, 100%);
+  text-align: left;
+}
+.video-meta {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-top: 1lh;
+}
+.video-title {
+  font-weight: bold;
+  overflow-wrap: anywhere;
+  margin-bottom: 1lh;
+}
+.panel {
+  flex: 0 0 38ch;
+  padding: 0.9em 2ch 0.6em;
+}
+.choices {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
+}
+.choice {
+  display: flex;
+  gap: 1ch;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.choice .indicator {
+  visibility: hidden;
+}
+.choice[aria-selected='true'] {
+  font-weight: bold;
+}
+.choice[aria-selected='true'] .indicator {
+  visibility: visible;
+}
+
+/* downloading */
+.dl-row {
+  display: flex;
+  justify-content: center;
+  min-height: 1lh;
+  margin-top: 1lh;
+}
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 1ch;
+}
+.progress-track {
+  width: 30ch;
+  height: 0.6em;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 120ms linear;
+}
+/* fixed width — "5%" vs "100%" must not shift the line */
+.progress-percent {
+  min-width: 4ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.meta {
+  white-space: pre; /* keeps the padded fixed-width slots */
+}
+.status {
+  display: flex;
+  gap: 1ch;
+  justify-content: center;
+}
+.spinner {
+  width: 1ch;
+  color: var(--primary);
+}
+
+/* done / error */
+.ghost-button {
+  margin-top: 1lh;
+  padding: 0.35em 3ch;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--primary);
+  font-weight: bold;
+  cursor: pointer;
+}
+.error {
+  max-width: min(72ch, 100%);
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+/* shortcuts */
+.shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2lh;
+  color: var(--secondary);
+}
+.hints {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hints li + li::before,
+.leading::after {
+  content: '·';
+  margin: 0 2ch;
+  color: var(--secondary);
+}
+.hint {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+button.hint {
+  cursor: pointer;
+}
+kbd {
+  font: inherit;
+  color: var(--primary);
+}
+/* picking: thumbnail, description, folder picker */
+.video-thumb {
+display: block;
+width: 100%;
+aspect-ratio: 16 / 9;
+object-fit: cover;
+border-radius: var(--radius);
+margin-bottom: 1lh;
+background: var(--line);
+}
+.video-description {
+margin-top: 1lh;
+white-space: pre-line;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 4;
+overflow: hidden;
+cursor: pointer;
+}
+.video-description.expanded {
+display: block;
+}
+.link-button {
+margin-top: 1lh;
+padding: 0;
+border: 0;
+background: none;
+color: var(--secondary);
+text-decoration: underline;
+text-align: left;
+cursor: pointer;
+}
+
+
+/* drag a link over the window */
+body.drop-target .screen {
+outline: 1px dashed var(--primary);
+outline-offset: -1ch;
+}
